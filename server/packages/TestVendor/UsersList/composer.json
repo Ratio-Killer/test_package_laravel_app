@@ -1,0 +1,15 @@
+{
+    "name": "testvendor/userslist",
+    "autoload": {
+        "psr-4": {
+            "TestVendor\\UsersList\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TestVendor\\UsersList\\UsersListServiceProvider"
+            ]
+        }
+    }
+}
