@@ -4,19 +4,16 @@ namespace TestVendor\UsersList\Http\Controllers\User;
 
 use TestVendor\UsersList\Http\Requests\User\StoreUserRequest;
 use TestVendor\UsersList\Models\User;
-use TestVendor\UsersList\Models\Phone;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class UserController
 {
     /**
-     * @param Request $request
      * @return View
      */
-    public function index(Request $request): View
+    public function index(): View
     {
         $users = User::with('phones')->orderByDesc('id')->paginate(10)->withQueryString();
         return view('userslist::index', compact('users'));
@@ -57,9 +54,7 @@ class UserController
     {
         DB::transaction(function () use ($request, $user) {
             $user->update($request->only(['first_name', 'last_name']));
-
             $phones = collect($request->input('phones'))->filter();
-
             $user->phones()->delete();
             $user->phones()->createMany($phones->map(fn ($p) => ['number' => $p])->toArray());
         });
